@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+
+  <canvas id="myCanvas" style="border:1px solid #d3d3d3;">
+    Your browser does not support the HTML5 canvas tag.</canvas>
+  <script src="./filterImage.js"></script>
+
+  <script>
+
+    var myCanvas = document.getElementById('myCanvas')
+    var ctx = myCanvas.getContext('2d');
+    var image = new Image();   // Using optional size for image
+    image.onload = drawImageActualSize; // Draw when image has loaded
+
+    // load an image of intrinsic size 300x227 in CSS pixels
+    image.src = 'image.jpg';
+
+    function drawImageActualSize() {
+      // Use the intrinsic size of image in CSS pixels for the canvas element
+      var tempCv = document.createElement('canvas');
+      var tempCtx = tempCv.getContext("2d")
+      myCanvas.width = image.width
+      myCanvas.height = image.height
+      tempCv.width = myCanvas.width
+      tempCv.height = myCanvas.height
+
+
+      tempCtx.drawImage(image, 0, 0, image.width, image.height);
+
+      idata = Filters.sobel(tempCtx.getImageData(0, 0, image.width, image.height))
+      ctx.putImageData(idata, 0, 0);
+      var img = document.createElement("img");
+      img.src = myCanvas.toDataURL("image/png");
+      document.body.appendChild(img);
+
+      // ctx.drawImage(this, 0, 0)
+      // Will draw the image as 300x227, ignoring the custom size of 60x45
+      // given in the constructor
+
+      // To use the custom size we'll have to specify the scale parameters 
+      // using the element's width and height properties - lets draw one 
+      // on top in the corner:
+
+    }
+  </script>
+
+</html>

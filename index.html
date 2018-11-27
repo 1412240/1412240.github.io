@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Video</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./index.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="left">
+      <!-- <video id="video" autoplay muted>
+        <source src="./mov_bbb.ogg" type="video/ogg" />
+      </video> -->
+      <video id="video" src="mov_bbb.ogg" controls="false"></video>
+    </div>
+    <div class="right"><canvas id="canvas"></canvas></div>
+  </div>
+  <script src="./filterImage.js"></script>
+  <script>
+    (function () {
+      var canvas = document.getElementById("canvas");
+      var ctx = canvas.getContext("2d");
+      var video = document.getElementById("video");
+      var tempCv = document.createElement('canvas');
+      var tempCtx = tempCv.getContext("2d")
+      video.addEventListener("loadedmetadata", function () {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        tempCv.width = video.videoWidth;
+        tempCv.height = video.videoHeight;
+      });
+      video.addEventListener(
+        "play",
+        function () {
+          var $this = this; //cache
+          (function loop() {
+            if (!$this.paused && !$this.ended) {
+
+              // let iData = Filters.filterImage(Filters.sobel, this)
+              // ctx.putImageData(iData, 0, 0)
+
+              tempCtx.drawImage($this, 0, 0);
+              idata = Filters.sobel(tempCtx.getImageData(0, 0, tempCv.width, tempCv.height))
+              ctx.putImageData(idata, 0, 0);
+              setTimeout(loop, 1000 / 25);
+            }
+          })();
+        },
+        0
+      );
+    })();
+
+  </script>
+</body>
+
+</html>

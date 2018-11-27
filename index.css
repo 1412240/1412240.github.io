@@ -1,0 +1,25 @@
+.container {
+  width: 1700px;
+  height: 700px;
+  border: solid 1px;
+  display: flex;
+}
+
+.left {
+  width: 50%;
+  height: 100%;
+  border-right: solid 1px;
+  float: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.right {
+  height: 100%;
+  width: 50%;
+  float: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
